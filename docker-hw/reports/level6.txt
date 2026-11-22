@@ -1,0 +1,52 @@
+$ docker compose -f compose.sqlite.yaml up -d --wait
+ Volume docker-hw_app-data Creating 
+ Network docker-hw_default Creating 
+ Volume docker-hw_app-data Created 
+ Network docker-hw_default Created 
+ Container docker-hw-app-1 Creating 
+ Container docker-hw-app-1 Created 
+ Container docker-hw-app-1 Starting 
+ Container docker-hw-app-1 Started 
+ Container docker-hw-app-1 Waiting 
+ Container docker-hw-app-1 Healthy 
+
+$ curl -s -X POST http://127.0.0.1:28081/increment
+{"greeting": "Hello from Compose!", "count": 1, "hostname": "8612a3de95b2", "storage": "sqlite"}
+$ curl -s -X POST http://127.0.0.1:28081/increment
+{"greeting": "Hello from Compose!", "count": 2, "hostname": "8612a3de95b2", "storage": "sqlite"}
+$ curl -s -X POST http://127.0.0.1:28081/increment
+{"greeting": "Hello from Compose!", "count": 3, "hostname": "8612a3de95b2", "storage": "sqlite"}
+$ docker compose -f compose.sqlite.yaml down
+ Container docker-hw-app-1 Stopping 
+ Container docker-hw-app-1 Stopped 
+ Container docker-hw-app-1 Removing 
+ Container docker-hw-app-1 Removed 
+ Network docker-hw_default Removing 
+ Network docker-hw_default Removed 
+
+$ docker volume ls --filter name=app-data
+DRIVER    VOLUME NAME
+local     docker-hw_app-data
+
+$ docker compose -f compose.sqlite.yaml up -d --wait
+ Network docker-hw_default Creating 
+ Network docker-hw_default Created 
+ Container docker-hw-app-1 Creating 
+ Container docker-hw-app-1 Created 
+ Container docker-hw-app-1 Starting 
+ Container docker-hw-app-1 Started 
+ Container docker-hw-app-1 Waiting 
+ Container docker-hw-app-1 Healthy 
+
+$ curl -s http://127.0.0.1:28081/
+{"greeting": "Hello from Compose!", "count": 3, "hostname": "d4af35a96581", "storage": "sqlite"}
+$ docker compose -f compose.sqlite.yaml down -v
+ Container docker-hw-app-1 Stopping 
+ Container docker-hw-app-1 Stopped 
+ Container docker-hw-app-1 Removing 
+ Container docker-hw-app-1 Removed 
+ Volume docker-hw_app-data Removing 
+ Network docker-hw_default Removing 
+ Volume docker-hw_app-data Removed 
+ Network docker-hw_default Removed 
+

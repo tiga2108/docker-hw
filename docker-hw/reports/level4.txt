@@ -1,0 +1,17 @@
+$ docker build -t docker-hw-app .
+$ docker run -d --name counter -p 28080:8000 -e GREETING="Hello from env!" docker-hw-app
+9d436da9b4fab334575e8674acf7eb190cd01aab835bc5c2cbaea4f7499ae309
+$ curl -s http://127.0.0.1:28080/
+{"greeting": "Hello from env!", "count": 0, "hostname": "9d436da9b4fa", "storage": "sqlite"}
+$ curl -s -X POST http://127.0.0.1:28080/increment
+{"greeting": "Hello from env!", "count": 1, "hostname": "9d436da9b4fa", "storage": "sqlite"}
+$ curl -s -X POST http://127.0.0.1:28080/increment
+{"greeting": "Hello from env!", "count": 2, "hostname": "9d436da9b4fa", "storage": "sqlite"}
+$ curl -s http://127.0.0.1:28080/
+{"greeting": "Hello from env!", "count": 2, "hostname": "9d436da9b4fa", "storage": "sqlite"}
+$ docker logs counter
+2026-11-22 20:40:24,264 listening port=8000 storage=sqlite
+2026-11-22 20:40:26,013 http 172.17.0.1 "GET / HTTP/1.1" 200 -
+2026-11-22 20:40:26,020 http 172.17.0.1 "POST /increment HTTP/1.1" 200 -
+2026-11-22 20:40:26,027 http 172.17.0.1 "POST /increment HTTP/1.1" 200 -
+2026-11-22 20:40:26,033 http 172.17.0.1 "GET / HTTP/1.1" 200 -

@@ -1,0 +1,16 @@
+# Уровень 6: одно приложение, SQLite в именованном volume
+services:
+  app:
+    build: .
+    image: docker-hw-app:latest
+    environment:
+      GREETING: ${GREETING:-Hello, Docker!}
+      STORAGE: sqlite
+      DATA_FILE: /data/counter.db
+    ports:
+      - "${HOST_PORT:-8080}:8000"
+    volumes:
+      - app-data:/data
+    restart: unless-stopped
+volumes:
+  app-data:

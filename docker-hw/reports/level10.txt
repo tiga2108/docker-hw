@@ -1,0 +1,141 @@
+=== Запуск 1 ===
+[20:43:24] 1. запуск пустого проекта (порт 28082)
+ Network hwcheck-1795380204-24075_default Creating 
+ Volume hwcheck-1795380204-24075_redis-data Creating 
+ Volume hwcheck-1795380204-24075_redis-data Created 
+ Network hwcheck-1795380204-24075_default Created 
+ Container hwcheck-1795380204-24075-redis-1 Creating 
+ Container hwcheck-1795380204-24075-redis-1 Created 
+ Container hwcheck-1795380204-24075-app-1 Creating 
+ Container hwcheck-1795380204-24075-app-1 Created 
+ Container hwcheck-1795380204-24075-redis-1 Starting 
+ Container hwcheck-1795380204-24075-redis-1 Started 
+ Container hwcheck-1795380204-24075-redis-1 Waiting 
+ Container hwcheck-1795380204-24075-redis-1 Healthy 
+ Container hwcheck-1795380204-24075-app-1 Starting 
+ Container hwcheck-1795380204-24075-app-1 Started 
+ Container hwcheck-1795380204-24075-app-1 Waiting 
+ Container hwcheck-1795380204-24075-redis-1 Waiting 
+ Container hwcheck-1795380204-24075-redis-1 Healthy 
+ Container hwcheck-1795380204-24075-app-1 Healthy 
+[20:43:33] 2. счетчик 0 -> N
+[20:43:33] OK  исходный счетчик = 0
+[20:43:33] OK  после 5 POST = 5
+[20:43:33] 3. пересоздание контейнера app
+ Container hwcheck-1795380204-24075-app-1 Recreate 
+ Container hwcheck-1795380204-24075-app-1 Recreated 
+ Container hwcheck-1795380204-24075-app-1 Starting 
+ Container hwcheck-1795380204-24075-app-1 Started 
+ Container hwcheck-1795380204-24075-app-1 Waiting 
+ Container hwcheck-1795380204-24075-app-1 Healthy 
+[20:43:49] OK  после пересоздания app = 5
+[20:43:49] 4. отключение Redis
+ Container hwcheck-1795380204-24075-redis-1 Stopping 
+ Container hwcheck-1795380204-24075-redis-1 Stopped 
+[20:43:49] OK  GET /healthz = 200
+[20:43:49] OK  GET /readyz = 503
+[20:43:49] OK  POST /increment = 503
+ Container hwcheck-1795380204-24075-redis-1 Starting 
+ Container hwcheck-1795380204-24075-redis-1 Started 
+[20:43:50] OK  GET / после запуска Redis = 5
+[20:43:50] OK  следующий POST = 6
+[20:43:50] 5. резервная копия
+ Container hwcheck-1795380204-24075-app-1 Stopping 
+ Container hwcheck-1795380204-24075-app-1 Stopped 
+ Container hwcheck-1795380204-24075-redis-1 Stopping 
+ Container hwcheck-1795380204-24075-redis-1 Stopped 
+[20:44:00] OK  копия: /home/user/workspace/docker-hw/backups/redis-data-hwcheck-1795380204-24075.tar.gz (489 байт)
+drwxr-xr-x 999/1000         0 2026-11-22 20:44:00 ./
+drwx------ 999/1000         0 2026-11-22 20:43:25 ./appendonlydir/
+-rw------- 999/1000       328 2026-11-22 20:43:50 ./appendonlydir/appendonly.aof.1.incr.aof
+-rw------- 999/1000        88 2026-11-22 20:43:25 ./appendonlydir/appendonly.aof.manifest
+-rw------- 999/1000        89 2026-11-22 20:43:25 ./appendonlydir/appendonly.aof.1.base.rdb
+-rw------- 999/1000       115 2026-11-22 20:44:00 ./dump.rdb
+[20:44:01] 6. удаление проекта с volumes
+ Container hwcheck-1795380204-24075-app-1 Stopping 
+ Container hwcheck-1795380204-24075-app-1 Stopped 
+ Container hwcheck-1795380204-24075-app-1 Removing 
+ Container hwcheck-1795380204-24075-app-1 Removed 
+ Container hwcheck-1795380204-24075-redis-1 Stopping 
+ Container hwcheck-1795380204-24075-redis-1 Stopped 
+ Container hwcheck-1795380204-24075-redis-1 Removing 
+ Container hwcheck-1795380204-24075-redis-1 Removed 
+ Volume hwcheck-1795380204-24075_redis-data Removing 
+ Network hwcheck-1795380204-24075_default Removing 
+ Volume hwcheck-1795380204-24075_redis-data Removed 
+ Network hwcheck-1795380204-24075_default Removed 
+[20:44:01] OK  проект и volume удалены
+[20:44:01] Очистка: удаляю тестовый проект hwcheck-1795380204-24075 (контейнеры, сеть, volumes)
+[20:44:01] ИТОГ: УСПЕХ
+exit code: 0
+
+=== Запуск 2 ===
+[20:44:01] 1. запуск пустого проекта (порт 28082)
+ Network hwcheck-1795380241-25733_default Creating 
+ Volume hwcheck-1795380241-25733_redis-data Creating 
+ Volume hwcheck-1795380241-25733_redis-data Created 
+ Network hwcheck-1795380241-25733_default Created 
+ Container hwcheck-1795380241-25733-redis-1 Creating 
+ Container hwcheck-1795380241-25733-redis-1 Created 
+ Container hwcheck-1795380241-25733-app-1 Creating 
+ Container hwcheck-1795380241-25733-app-1 Created 
+ Container hwcheck-1795380241-25733-redis-1 Starting 
+ Container hwcheck-1795380241-25733-redis-1 Started 
+ Container hwcheck-1795380241-25733-redis-1 Waiting 
+ Container hwcheck-1795380241-25733-redis-1 Healthy 
+ Container hwcheck-1795380241-25733-app-1 Starting 
+ Container hwcheck-1795380241-25733-app-1 Started 
+ Container hwcheck-1795380241-25733-app-1 Waiting 
+ Container hwcheck-1795380241-25733-redis-1 Waiting 
+ Container hwcheck-1795380241-25733-redis-1 Healthy 
+ Container hwcheck-1795380241-25733-app-1 Healthy 
+[20:44:10] 2. счетчик 0 -> N
+[20:44:10] OK  исходный счетчик = 0
+[20:44:10] OK  после 5 POST = 5
+[20:44:10] 3. пересоздание контейнера app
+ Container hwcheck-1795380241-25733-app-1 Recreate 
+ Container hwcheck-1795380241-25733-app-1 Recreated 
+ Container hwcheck-1795380241-25733-app-1 Starting 
+ Container hwcheck-1795380241-25733-app-1 Started 
+ Container hwcheck-1795380241-25733-app-1 Waiting 
+ Container hwcheck-1795380241-25733-app-1 Healthy 
+[20:44:26] OK  после пересоздания app = 5
+[20:44:26] 4. отключение Redis
+ Container hwcheck-1795380241-25733-redis-1 Stopping 
+ Container hwcheck-1795380241-25733-redis-1 Stopped 
+[20:44:26] OK  GET /healthz = 200
+[20:44:26] OK  GET /readyz = 503
+[20:44:26] OK  POST /increment = 503
+ Container hwcheck-1795380241-25733-redis-1 Starting 
+ Container hwcheck-1795380241-25733-redis-1 Started 
+[20:44:27] OK  GET / после запуска Redis = 5
+[20:44:27] OK  следующий POST = 6
+[20:44:27] 5. резервная копия
+ Container hwcheck-1795380241-25733-app-1 Stopping 
+ Container hwcheck-1795380241-25733-app-1 Stopped 
+ Container hwcheck-1795380241-25733-redis-1 Stopping 
+ Container hwcheck-1795380241-25733-redis-1 Stopped 
+[20:44:37] OK  копия: /home/user/workspace/docker-hw/backups/redis-data-hwcheck-1795380241-25733.tar.gz (485 байт)
+drwxr-xr-x 999/1000         0 2026-11-22 20:44:37 ./
+drwx------ 999/1000         0 2026-11-22 20:44:02 ./appendonlydir/
+-rw------- 999/1000       328 2026-11-22 20:44:27 ./appendonlydir/appendonly.aof.1.incr.aof
+-rw------- 999/1000        88 2026-11-22 20:44:02 ./appendonlydir/appendonly.aof.manifest
+-rw------- 999/1000        89 2026-11-22 20:44:02 ./appendonlydir/appendonly.aof.1.base.rdb
+-rw------- 999/1000       115 2026-11-22 20:44:37 ./dump.rdb
+[20:44:38] 6. удаление проекта с volumes
+ Container hwcheck-1795380241-25733-app-1 Stopping 
+ Container hwcheck-1795380241-25733-app-1 Stopped 
+ Container hwcheck-1795380241-25733-app-1 Removing 
+ Container hwcheck-1795380241-25733-app-1 Removed 
+ Container hwcheck-1795380241-25733-redis-1 Stopping 
+ Container hwcheck-1795380241-25733-redis-1 Stopped 
+ Container hwcheck-1795380241-25733-redis-1 Removing 
+ Container hwcheck-1795380241-25733-redis-1 Removed 
+ Volume hwcheck-1795380241-25733_redis-data Removing 
+ Network hwcheck-1795380241-25733_default Removing 
+ Volume hwcheck-1795380241-25733_redis-data Removed 
+ Network hwcheck-1795380241-25733_default Removed 
+[20:44:38] OK  проект и volume удалены
+[20:44:38] Очистка: удаляю тестовый проект hwcheck-1795380241-25733 (контейнеры, сеть, volumes)
+[20:44:38] ИТОГ: УСПЕХ
+exit code: 0

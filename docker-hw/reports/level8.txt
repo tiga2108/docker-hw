@@ -1,0 +1,111 @@
+$ docker compose up -d --wait
+ Network docker-hw_default Creating 
+ Volume docker-hw_redis-data Creating 
+ Volume docker-hw_redis-data Created 
+ Network docker-hw_default Created 
+ Container docker-hw-redis-1 Creating 
+ Container docker-hw-redis-1 Created 
+ Container docker-hw-app-1 Creating 
+ Container docker-hw-app-1 Created 
+ Container docker-hw-redis-1 Starting 
+ Container docker-hw-redis-1 Started 
+ Container docker-hw-redis-1 Waiting 
+ Container docker-hw-redis-1 Healthy 
+ Container docker-hw-app-1 Starting 
+ Container docker-hw-app-1 Started 
+ Container docker-hw-app-1 Waiting 
+ Container docker-hw-redis-1 Waiting 
+ Container docker-hw-redis-1 Healthy 
+ Container docker-hw-app-1 Healthy 
+
+$ docker compose ps
+NAME                IMAGE                  COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+docker-hw-app-1     docker-hw-app:latest   "python app.py"          app       8 seconds ago   Up 5 seconds (healthy)   0.0.0.0:28082->8000/tcp, [::]:28082->8000/tcp
+docker-hw-redis-1   redis:7.4-alpine       "docker-entrypoint.s…"   redis     8 seconds ago   Up 8 seconds (healthy)   6379/tcp
+
+$ curl -s -X POST http://127.0.0.1:28082/increment
+{"greeting": "Hello from Redis!", "count": 1, "hostname": "7c2a11469235", "storage": "redis"}
+$ curl -s -X POST http://127.0.0.1:28082/increment
+{"greeting": "Hello from Redis!", "count": 2, "hostname": "7c2a11469235", "storage": "redis"}
+$ curl -s -X POST http://127.0.0.1:28082/increment
+{"greeting": "Hello from Redis!", "count": 3, "hostname": "7c2a11469235", "storage": "redis"}
+$ curl -s -X POST http://127.0.0.1:28082/increment
+{"greeting": "Hello from Redis!", "count": 4, "hostname": "7c2a11469235", "storage": "redis"}
+$ docker compose down
+ Container docker-hw-app-1 Stopping 
+ Container docker-hw-app-1 Stopped 
+ Container docker-hw-app-1 Removing 
+ Container docker-hw-app-1 Removed 
+ Container docker-hw-redis-1 Stopping 
+ Container docker-hw-redis-1 Stopped 
+ Container docker-hw-redis-1 Removing 
+ Container docker-hw-redis-1 Removed 
+ Network docker-hw_default Removing 
+ Network docker-hw_default Removed 
+
+$ docker compose up -d --wait
+ Network docker-hw_default Creating 
+ Network docker-hw_default Created 
+ Container docker-hw-redis-1 Creating 
+ Container docker-hw-redis-1 Created 
+ Container docker-hw-app-1 Creating 
+ Container docker-hw-app-1 Created 
+ Container docker-hw-redis-1 Starting 
+ Container docker-hw-redis-1 Started 
+ Container docker-hw-redis-1 Waiting 
+ Container docker-hw-redis-1 Healthy 
+ Container docker-hw-app-1 Starting 
+ Container docker-hw-app-1 Started 
+ Container docker-hw-app-1 Waiting 
+ Container docker-hw-redis-1 Waiting 
+ Container docker-hw-redis-1 Healthy 
+ Container docker-hw-app-1 Healthy 
+
+$ curl -s http://127.0.0.1:28082/
+{"greeting": "Hello from Redis!", "count": 4, "hostname": "5791bfc88de9", "storage": "redis"}
+$ docker compose stop redis
+ Container docker-hw-redis-1 Stopping 
+ Container docker-hw-redis-1 Stopped 
+
+$ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:28082/healthz
+200
+
+$ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:28082/readyz
+503
+
+$ curl -s -o /dev/null -w '%{http_code}\n' -X POST http://127.0.0.1:28082/increment
+503
+
+$ docker compose start redis
+ Container docker-hw-redis-1 Starting 
+ Container docker-hw-redis-1 Started 
+
+$ curl -s http://127.0.0.1:28082/readyz
+{"status": "ready", "storage": "redis"}
+$ curl -s http://127.0.0.1:28082/
+{"greeting": "Hello from Redis!", "count": 4, "hostname": "5791bfc88de9", "storage": "redis"}
+$ curl -s -X POST http://127.0.0.1:28082/increment
+{"greeting": "Hello from Redis!", "count": 5, "hostname": "5791bfc88de9", "storage": "redis"}
+$ docker compose exec app id
+uid=10001(appuser) gid=10001(appuser) groups=10001(appuser)
+
+$ docker compose exec app touch /app/x
+touch: cannot touch '/app/x': Read-only file system
+
+$ docker inspect -f 'ReadonlyRootfs={{.HostConfig.ReadonlyRootfs}} Memory={{.HostConfig.Memory}} NanoCpus={{.HostConfig.NanoCpus}} User={{.Config.User}}' $(docker compose ps -q app)
+ReadonlyRootfs=true Memory=268435456 NanoCpus=1000000000 User=10001:10001
+
+$ docker compose down -v
+ Container docker-hw-app-1 Stopping 
+ Container docker-hw-app-1 Stopped 
+ Container docker-hw-app-1 Removing 
+ Container docker-hw-app-1 Removed 
+ Container docker-hw-redis-1 Stopping 
+ Container docker-hw-redis-1 Stopped 
+ Container docker-hw-redis-1 Removing 
+ Container docker-hw-redis-1 Removed 
+ Volume docker-hw_redis-data Removing 
+ Network docker-hw_default Removing 
+ Volume docker-hw_redis-data Removed 
+ Network docker-hw_default Removed 
+
